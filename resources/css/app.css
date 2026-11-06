@@ -1,4 +1,3 @@
-@import '@fontsource-variable/archivo/wdth.css';
 @import '@fontsource-variable/inter/index.css';
 @import 'tailwindcss';
 
@@ -6,16 +5,15 @@
 @source '../../storage/framework/views/*.php';
 
 /*
- * Charte ABIDJAN SHOP : couleurs vives sur fond blanc. Orange et vert du drapeau ivoirien,
- * jaune soleil et bleu ciel en renfort ; noir « encre » pour le texte.
- * « --color-*: initial » supprime la palette par défaut de Tailwind : seules ces couleurs existent,
- * on ne peut pas sortir de la charte par erreur.
+ * Charte ABIDJAN SHOP, modèle « boutique populaire » (comme les grands sites d'achat en ligne d'ici) :
+ * fond blanc, produits et prix au premier plan, un vert franc pour tout ce qui fait acheter,
+ * du rouge pour les réductions, du jaune pour les badges. Une seule police, grasse et lisible.
+ * « --color-*: initial » supprime la palette par défaut de Tailwind : seules ces couleurs existent.
  *
  * Contrastes vérifiés (WCAG AA = 4.5 pour le texte courant) :
- *   gris sur blanc 7.2 · gris sur sable 5.7 · gris-clair sur encre 7.0
- *   encre sur orange 6.5 · sur vert-vif 8.0 · sur jaune 11.7 · sur ciel 7.2 · sur les fonds pastel 13.8 à 16.3
- *   orange sur encre 6.5 · orange-fonce sur blanc 5.1 · blanc sur vert 5.0 · rouge sur blanc 5.6
- *   ⚠ les couleurs vives portent du texte ENCRE, jamais blanc (blanc sur orange = 2.9, refusé).
+ *   blanc sur vert 4.6 · blanc sur vert-fonce 6.4 · vert-fonce sur blanc 6.4 / sur vert-pale 5.6
+ *   blanc sur rouge 5.0 · rouge sur blanc 5.0 · encre sur jaune 12.4 · gris sur blanc 6.4 / sur craie 5.9
+ *   ⚠ vert (#00873f) en petit texte sur fond gris clair = 4.3 : utiliser vert-fonce pour le texte.
  */
 @theme {
     --color-*: initial;
@@ -23,35 +21,24 @@
     --color-transparent: transparent;
     --color-current: currentColor;
 
-    --color-encre: #121212;        /* texte principal, grands aplats sombres */
-    --color-charbon: #1e1d1b;      /* cartes et blocs sur fond encre */
-    --color-craie: #f6f3ee;        /* fond clair principal (blanc cassé, plus chaud que le blanc pur) */
-    --color-sable: #ebe5da;        /* fond des visuels produits, sections alternées */
-    --color-ligne: #ddd5c8;        /* bordures sur fond clair */
-    --color-gris: #5c574f;         /* texte secondaire sur clair */
-    --color-gris-clair: #a39d93;   /* texte secondaire sur sombre */
+    --color-encre: #151816;        /* texte principal */
+    --color-charbon: #262a27;      /* pied de page */
+    --color-craie: #f4f6f4;        /* fond gris très clair des sections */
+    --color-sable: #f1f3f1;        /* fond des visuels produits */
+    --color-ligne: #e2e5e2;        /* bordures */
+    --color-gris: #5b605c;         /* texte secondaire sur clair */
+    --color-gris-clair: #a9b0ab;   /* texte secondaire sur sombre */
 
-    --color-orange: #ff6a00;       /* couleur principale : boutons (texte encre), grands aplats */
-    --color-orange-fonce: #b45000; /* orange lisible en petit texte sur clair */
-    --color-orange-pale: #ffe9d4;  /* fond de badge, surlignage */
+    --color-vert: #00873f;         /* couleur principale : boutons, liens d'action, WhatsApp */
+    --color-vert-fonce: #006e37;   /* survol, texte vert sur fond clair */
+    --color-vert-pale: #e3f4ea;    /* fonds d'information, badges doux */
 
-    --color-vert-vif: #00c26b;     /* aplats vifs (texte encre) */
-    --color-jaune: #ffc400;        /* aplats vifs, soleil */
-    --color-ciel: #3da5ff;         /* aplats vifs */
+    --color-rouge: #d42c2c;        /* réductions, prix promo, erreurs */
+    --color-rouge-pale: #fdeaea;
+    --color-jaune: #ffd23f;        /* badges « Nouveau », « Dernières pointures » (texte encre) */
 
-    /* Fonds acidulés des visuels produits (alternés d'un produit à l'autre) */
-    --color-peche: #ffd6b3;
-    --color-menthe: #bff0d6;
-    --color-citron: #fff0a3;
-    --color-azur: #cfe6ff;
-
-    --color-vert: #00804d;         /* boutons WhatsApp (texte blanc) et confirmations */
-    --color-vert-fonce: #006b40;
-    --color-rouge: #c62828;        /* erreurs, promotions */
-    --color-rouge-pale: #fdecea;
-
-    --font-display: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
     --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-display: var(--font-sans);
 
     --ease-out-soft: cubic-bezier(.22, 1, .36, 1);
 
@@ -72,36 +59,27 @@
     body {
         @apply bg-white font-sans text-encre antialiased;
     }
-    /* Titres : Archivo étroit et très gras, l'allure des boîtes à chaussures et des affiches de sport. */
     h1, h2, h3, .font-display {
-        font-family: var(--font-display);
-        font-stretch: 78%;
         font-weight: 800;
-        letter-spacing: -0.005em;
-        line-height: 1;
+        letter-spacing: -0.02em;
+        line-height: 1.12;
         overflow-wrap: break-word;
     }
-    h1, h2, .display-upper {
-        text-transform: uppercase;
-    }
-    /* Focus clavier visible partout : encre sur clair, orange sur sombre. */
+    /* Focus clavier visible partout. */
     :focus-visible {
-        outline: 3px solid var(--color-encre);
+        outline: 3px solid var(--color-vert);
         outline-offset: 2px;
-    }
-    :where(.bg-encre, .bg-charbon) :focus-visible {
-        outline-color: var(--color-orange);
     }
     summary::-webkit-details-marker {
         display: none;
     }
     [id] {
-        scroll-margin-top: 5.5rem;
+        scroll-margin-top: 8rem;
     }
 }
 
 @utility btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[15px] font-bold transition duration-200 ease-out-soft select-none active:scale-[.97] disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-[15px] font-bold transition duration-200 select-none active:scale-[.98] disabled:pointer-events-none disabled:opacity-50;
 }
 @utility a-btn {
     @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-semibold transition;
@@ -112,31 +90,39 @@
         @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
     }
 
-    /* Boutons du site */
+    /* Bouton d'achat : vert plein */
     .btn-primary {
-        @apply btn bg-orange text-encre hover:bg-encre hover:text-orange;
+        @apply btn bg-vert text-white hover:bg-vert-fonce;
     }
     .btn-dark {
-        @apply btn bg-encre text-white hover:bg-orange hover:text-encre;
+        @apply btn bg-encre text-white hover:bg-charbon;
+    }
+    .btn-light {
+        @apply btn bg-white text-encre hover:bg-vert-pale;
     }
     .btn-wa {
         @apply btn bg-vert text-white hover:bg-vert-fonce;
     }
     .btn-outline {
-        @apply btn border-2 border-encre bg-transparent text-encre hover:bg-encre hover:text-white;
+        @apply btn border-2 border-ligne bg-white text-encre hover:border-vert hover:text-vert-fonce;
     }
     .btn-outline-light {
-        @apply btn border-2 border-white/40 bg-transparent text-white hover:border-orange hover:text-orange;
+        @apply btn border-2 border-white/40 bg-transparent text-white hover:bg-white hover:text-encre;
     }
 
-    /* Sur-titre : petit texte en capitales précédé d'un carré orange (le point du logo). */
+    /* Lien d'action : « Tout voir → » */
+    .link-arrow {
+        @apply inline-flex items-center gap-1.5 text-sm font-bold text-vert-fonce hover:underline;
+    }
+
+    /* Sur-titre discret */
     .eyebrow {
-        @apply inline-flex items-center gap-2 text-xs font-bold tracking-[.18em] uppercase before:block before:size-2 before:bg-orange before:content-[''];
+        @apply text-xs font-bold tracking-wide text-vert-fonce uppercase;
     }
 
     /* Pastilles des filtres (pointure, marque…) : l'état coché vient de la vraie case, cachée. */
     .chip {
-        @apply relative inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-full border border-ligne bg-white px-4 text-sm font-semibold transition select-none hover:border-encre has-checked:border-encre has-checked:bg-encre has-checked:text-white has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-encre;
+        @apply relative inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg border border-ligne bg-white px-4 text-sm font-semibold transition select-none hover:border-vert has-checked:border-vert has-checked:bg-vert has-checked:text-white has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-vert;
     }
     .chip > input {
         @apply sr-only;
@@ -147,7 +133,7 @@
         @apply mb-1.5 block text-sm font-semibold text-encre;
     }
     .field {
-        @apply block w-full rounded-xl border border-ligne bg-white px-4 py-3 text-base text-encre transition placeholder:text-gris/60 focus:border-encre focus:ring-4 focus:ring-encre/10 focus:outline-none aria-invalid:border-rouge;
+        @apply block w-full rounded-lg border border-ligne bg-white px-4 py-3 text-base text-encre transition placeholder:text-gris/60 focus:border-vert focus:ring-4 focus:ring-vert/15 focus:outline-none aria-invalid:border-rouge;
     }
     .field-help {
         @apply mt-1.5 text-xs text-gris;
@@ -158,37 +144,25 @@
 
     /* Admin */
     .card {
-        @apply rounded-2xl border border-ligne bg-white;
+        @apply rounded-xl border border-ligne bg-white;
     }
     .a-btn-primary {
-        @apply a-btn bg-encre text-white hover:bg-orange hover:text-encre;
+        @apply a-btn bg-vert text-white hover:bg-vert-fonce;
     }
     .a-btn-ghost {
-        @apply a-btn border border-ligne bg-white text-encre hover:border-encre;
+        @apply a-btn border border-ligne bg-white text-encre hover:border-vert;
     }
     .a-btn-danger {
         @apply a-btn border border-rouge/30 bg-white text-rouge hover:bg-rouge-pale;
     }
     .badge {
-        @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-bold;
+        @apply inline-flex items-center rounded-md px-2 py-0.5 text-xs font-bold;
     }
 }
 
 /* ---------- Animations (toutes facultatives) ---------- */
-/* Apparition au défilement : seulement si JavaScript tourne (classe .js sur <html>). */
-.js [data-reveal] {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity .7s var(--ease-out-soft), transform .7s var(--ease-out-soft);
-    transition-delay: calc(var(--i, 0) * 70ms);
-}
-.js [data-reveal].is-visible {
-    opacity: 1;
-    transform: none;
-}
-
 details[open] > .menu-panel {
-    animation: menu-in .3s var(--ease-out-soft);
+    animation: menu-in .25s var(--ease-out-soft);
 }
 @keyframes menu-in {
     from { opacity: 0; transform: translateY(-6px); }
@@ -201,9 +175,5 @@ details[open] > .menu-panel {
         animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
         scroll-behavior: auto !important;
-    }
-    .js [data-reveal] {
-        opacity: 1;
-        transform: none;
     }
 }

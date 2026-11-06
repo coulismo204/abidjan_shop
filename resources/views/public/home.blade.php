@@ -3,176 +3,147 @@
     $hero = $featured->first() ?? $latest->first();
 @endphp
 <x-layouts.public>
-    {{--
-        Accueil : fond blanc et grand titre noir (sobre, lisible), la couleur est concentrée
-        dans le panneau produit à droite, comme une vitrine.
-    --}}
-    <section class="bg-white">
-        <div class="container-page grid items-center gap-10 pt-8 pb-12 lg:grid-cols-[1fr_1.05fr] lg:gap-14 lg:pt-14 lg:pb-16">
-            <div>
-                <p class="eyebrow text-gris">{{ __('Chaussures homme · Abidjan') }}</p>
-                <h1 class="mt-5 text-[clamp(2.8rem,7.5vw,5.6rem)] leading-[.92]">{{ Setting::get('hero_title') }}</h1>
-                <p class="mt-6 max-w-lg text-lg leading-relaxed text-gris">{{ Setting::get('hero_subtitle') }}</p>
-                <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                    <a href="{{ route('shop') }}" class="btn-primary px-8 py-4 text-base">{{ __('Voir les chaussures') }}<x-icon name="arrow" class="size-5" /></a>
-                    <a href="{{ route('how') }}" class="btn-outline px-8 py-4 text-base">{{ __('Comment commander') }}</a>
-                </div>
-                <ul class="mt-10 grid gap-4 border-t border-ligne pt-6 text-sm sm:grid-cols-3">
-                    @foreach ([
-                        ['truck', 'Livré en 24 h', 'partout à Abidjan', 'bg-peche'],
-                        ['wallet', 'Payé à la livraison', 'ou Mobile Money', 'bg-menthe'],
-                        ['swap', 'Échange 48 h', 'si la pointure ne va pas', 'bg-azur'],
-                    ] as [$icon, $strong, $rest, $bg])
-                        <li class="flex items-center gap-3">
-                            <span class="flex size-10 shrink-0 items-center justify-center rounded-xl {{ $bg }}"><x-icon :name="$icon" class="size-5" /></span>
-                            <span><strong class="block font-semibold">{{ __($strong) }}</strong><span class="text-gris">{{ __($rest) }}</span></span>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-
-            @if ($hero)
-                <a href="{{ route('product', $hero) }}" class="group relative block overflow-hidden rounded-[2rem] bg-orange" aria-label="{{ $hero->fullName() }}">
-                    <div class="relative aspect-[4/3.4] sm:aspect-[5/4]">
-                        <div aria-hidden="true" class="absolute -top-[18%] -right-[12%] size-[75%] rounded-full bg-jaune transition duration-700 ease-out-soft group-hover:scale-105"></div>
-                        <div aria-hidden="true" class="absolute -bottom-[30%] -left-[15%] size-[55%] rounded-full bg-white/15"></div>
-                        <div class="absolute inset-0 flex items-center justify-center pb-[18%]">
-                            @if ($hero->coverPhoto)
-                                <img src="{{ $hero->coverPhoto->url() }}" alt="" class="size-full object-cover" fetchpriority="high">
-                            @else
-                                <x-shoe :silhouette="$hero->category->silhouette" :hex="$hero->color?->hex" class="w-[66%] -rotate-12 drop-shadow-[0_28px_24px_rgb(90_30_0/.35)] transition duration-700 ease-out-soft group-hover:-rotate-6" />
-                            @endif
-                        </div>
-                        <div class="absolute bottom-4 left-4 flex items-end gap-3 rounded-2xl bg-white px-4 py-3 shadow-xl shadow-encre/15 sm:bottom-6 sm:left-6">
-                            <div>
-                                <p class="text-[11px] font-bold tracking-[.16em] text-gris uppercase">{{ $hero->brand?->name ?? __('À la une') }}</p>
-                                <p class="font-semibold">{{ $hero->name }}</p>
-                                <x-price :product="$hero" />
-                            </div>
-                            <span class="mb-1 flex size-9 items-center justify-center rounded-full bg-encre text-white transition group-hover:bg-orange group-hover:text-encre"><x-icon name="arrow" class="size-4" /></span>
-                        </div>
-                        <span class="absolute top-4 left-4 badge bg-white px-3 py-1 text-encre sm:top-6 sm:left-6">{{ __('À la une') }}</span>
+    <div class="container-page space-y-10 pt-4 sm:space-y-14 sm:pt-6">
+        {{-- Bannière : message court, un bouton, une paire en vedette. Compacte pour laisser voir les produits dessous. --}}
+        <section class="relative isolate overflow-hidden rounded-2xl bg-vert text-white">
+            <div aria-hidden="true" class="absolute -right-16 -bottom-24 -z-10 size-72 rounded-full bg-white/10 sm:size-96"></div>
+            <div class="grid items-center gap-4 p-5 sm:grid-cols-[1.2fr_1fr] sm:p-8 lg:p-10">
+                <div>
+                    <p class="inline-flex rounded-md bg-jaune px-2.5 py-1 text-xs font-bold text-encre">{{ __('Paiement à la livraison') }}</p>
+                    <h1 class="mt-3 text-3xl sm:text-4xl lg:text-5xl">{{ Setting::get('hero_title') }}</h1>
+                    <p class="mt-2 max-w-md text-[15px] text-white/90 sm:text-base">{{ Setting::get('hero_subtitle') }}</p>
+                    <div class="mt-5 flex flex-wrap gap-2">
+                        <a href="{{ route('shop') }}" class="btn-light">{{ __('Voir les chaussures') }}<x-icon name="arrow" class="size-4" /></a>
+                        <a href="{{ route('shop', ['promo' => 1]) }}" class="btn-outline-light">{{ __('Les promos') }}</a>
                     </div>
-                </a>
-            @endif
-        </div>
-    </section>
-
-    {{-- Accès direct par pointure : le premier réflexe d'un acheteur de chaussures --}}
-    <section class="container-page pt-4 sm:pt-8">
-        <div class="flex flex-col gap-5 rounded-3xl bg-ciel p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-                <p class="eyebrow before:bg-encre">{{ __('Achat express') }}</p>
-                <h2 class="mt-2 text-3xl sm:text-4xl">{{ __('Quelle est votre pointure ?') }}</h2>
-            </div>
-            <div class="flex flex-wrap gap-2">
-                @foreach (range(39, 46) as $size)
-                    <a href="{{ route('shop', ['pointure' => [$size]]) }}" class="flex size-14 items-center justify-center rounded-2xl bg-white font-display text-2xl transition [font-stretch:85%] hover:-translate-y-0.5 hover:bg-encre hover:text-white">{{ $size }}</a>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    {{-- Catégories --}}
-    @if ($categories->isNotEmpty())
-        <section class="container-page pt-14 sm:pt-20">
-            <h2 class="text-4xl sm:text-5xl">{{ __('Trouver son style') }}</h2>
-            @php($catCols = [1 => 'lg:grid-cols-1', 2 => 'lg:grid-cols-2', 3 => 'lg:grid-cols-3', 4 => 'lg:grid-cols-4', 5 => 'lg:grid-cols-5'][min($categories->count(), 5)])
-            <div class="mt-6 grid grid-cols-2 gap-3 sm:gap-4 {{ $catCols }}">
-                @foreach ($categories as $cat)
-                    @php($tile = ['bg-orange', 'bg-vert-vif', 'bg-jaune', 'bg-ciel', 'bg-peche'][$loop->index % 5])
-                    <a href="{{ route('shop.category', $cat) }}" data-reveal style="--i: {{ $loop->index }}" @class([
-                        'group relative flex flex-col justify-between overflow-hidden rounded-3xl p-5 text-encre transition duration-500 ease-out-soft hover:-translate-y-1',
-                        $tile,
-                        'col-span-2 lg:col-span-1' => $loop->first,
-                    ])>
-                        <div>
-                            <h3 class="text-xl uppercase [overflow-wrap:normal] sm:text-3xl">{{ $cat->name }}</h3>
-                            <p class="mt-1 text-sm font-medium">{{ trans_choice(':count modèle|:count modèles', $cat->products_count) }}</p>
-                        </div>
-                        <x-shoe :silhouette="$cat->silhouette" hex="#ffffff" class="mt-4 w-[85%] self-end transition duration-500 ease-out-soft group-hover:-rotate-6" />
+                </div>
+                @if ($hero)
+                    <a href="{{ route('product', $hero) }}" class="relative mx-auto hidden aspect-square w-full max-w-xs items-center justify-center sm:flex lg:max-w-sm" aria-label="{{ $hero->fullName() }}">
+                        <span aria-hidden="true" class="absolute inset-[6%] rounded-full bg-white"></span>
+                        <x-shoe :silhouette="$hero->category->silhouette" :hex="$hero->color?->hex" class="relative w-[92%] -translate-y-[6%] -rotate-12 drop-shadow-xl" />
+                        <span class="absolute right-0 bottom-0 rounded-lg bg-white px-3 py-2 text-encre shadow-lg">
+                            <span class="block text-xs font-semibold text-gris">{{ $hero->brand?->name }} {{ $hero->name }}</span>
+                            <x-price :product="$hero" />
+                        </span>
                     </a>
-                @endforeach
+                @endif
             </div>
         </section>
-    @endif
 
-    {{-- Sélection --}}
-    @if ($featured->isNotEmpty())
-        <section class="container-page pt-14 sm:pt-20">
-            <div class="flex items-end justify-between gap-4">
-                <div>
-                    <p class="eyebrow text-gris">{{ __('Sélection') }}</p>
-                    <h2 class="mt-2 text-4xl sm:text-5xl">{{ __('Les incontournables') }}</h2>
-                </div>
-                <a href="{{ route('shop') }}" class="hidden shrink-0 items-center gap-2 font-semibold underline-offset-4 hover:underline sm:flex">{{ __('Tout voir') }}<x-icon name="arrow" class="size-4" /></a>
-            </div>
-            <div class="mt-6 grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 lg:grid-cols-4">
-                @foreach ($featured as $product)
-                    <div data-reveal style="--i: {{ $loop->index % 4 }}"><x-product-card :product="$product" /></div>
-                @endforeach
-            </div>
-        </section>
-    @endif
-
-    {{-- Comment ça marche --}}
-    <section class="container-page pt-14 sm:pt-20">
-        <div class="overflow-hidden rounded-3xl bg-vert-vif p-6 text-encre sm:p-10 lg:p-14">
-            <p class="eyebrow before:bg-encre">{{ __('Simple comme un message') }}</p>
-            <h2 class="mt-3 max-w-2xl text-4xl sm:text-5xl">{{ __('Commandé en 1 minute, livré chez vous') }}</h2>
-            <ol class="mt-10 grid gap-8 sm:grid-cols-3">
-                @foreach ([
-                    ['Choisissez', 'Votre modèle et votre pointure. Les pointures affichées sont en stock, vraiment.'],
-                    ['Validez', 'Nom, téléphone, commune : c\'est tout. Pas de compte à créer, pas de carte bancaire.'],
-                    ['Recevez', 'On vous confirme sur WhatsApp, le livreur vous appelle. Vous payez à la réception ou par Mobile Money.'],
-                ] as $i => [$step, $text])
-                    <li data-reveal style="--i: {{ $i }}">
-                        <span class="flex size-16 items-center justify-center rounded-full bg-white font-display text-4xl [font-stretch:75%]">0{{ $i + 1 }}</span>
-                        <h3 class="mt-4 text-2xl uppercase">{{ __($step) }}</h3>
-                        <p class="mt-2 leading-relaxed font-medium">{{ __($text) }}</p>
-                    </li>
-                @endforeach
-            </ol>
-            <a href="{{ route('shop') }}" class="btn-dark mt-10 px-8 py-4 hover:bg-white hover:text-encre">{{ __('Je choisis mes chaussures') }}<x-icon name="arrow" class="size-5" /></a>
-        </div>
-    </section>
-
-    {{-- Nouveautés --}}
-    @if ($latest->isNotEmpty())
-        <section class="container-page pt-14 sm:pt-20">
-            <div class="flex items-end justify-between gap-4">
-                <div>
-                    <p class="eyebrow text-gris">{{ __('Fraîchement arrivées') }}</p>
-                    <h2 class="mt-2 text-4xl sm:text-5xl">{{ __('Nouveautés') }}</h2>
-                </div>
-                <a href="{{ route('shop', ['tri' => 'nouveautes']) }}" class="hidden shrink-0 items-center gap-2 font-semibold underline-offset-4 hover:underline sm:flex">{{ __('Tout voir') }}<x-icon name="arrow" class="size-4" /></a>
-            </div>
-            <div class="-mx-4 mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:thin] sm:gap-5 lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0">
-                @foreach ($latest->take(8) as $product)
-                    <div class="w-[46%] shrink-0 snap-start sm:w-[31%] lg:w-auto">
-                        <x-product-card :product="$product" />
-                    </div>
-                @endforeach
-            </div>
-        </section>
-    @endif
-
-    {{-- Garanties --}}
-    <section class="container-page pt-14 sm:pt-20">
-        <ul class="grid gap-3 sm:grid-cols-3">
+        {{-- Garanties --}}
+        <ul class="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
             @foreach ([
-                ['truck', Setting::get('delivery_delay'), Setting::get('delivery_outside'), 'bg-peche', 'bg-orange'],
-                ['wallet', __('Payez à la réception'), __('En espèces au livreur, ou par Orange Money, MTN MoMo, Moov Money et Wave.'), 'bg-menthe', 'bg-vert-vif'],
-                ['swap', __('Pointure échangée'), Setting::get('exchange_policy'), 'bg-azur', 'bg-ciel'],
-            ] as [$icon, $titleText, $text, $bg, $iconBg])
-                <li class="flex gap-4 rounded-3xl {{ $bg }} p-5">
-                    <span class="flex size-12 shrink-0 items-center justify-center rounded-2xl {{ $iconBg }} text-encre"><x-icon :name="$icon" class="size-6" /></span>
-                    <div>
-                        <p class="font-display text-xl uppercase">{{ $titleText }}</p>
-                        <p class="mt-1 text-sm leading-relaxed">{{ $text }}</p>
-                    </div>
+                ['wallet', __('Paiement à la livraison'), __('Espèces ou Mobile Money')],
+                ['truck', Setting::get('delivery_delay'), __('Partout à Abidjan')],
+                ['swap', __('Échange sous 48 h'), __('Si la pointure ne va pas')],
+                ['whatsapp', __('Commande sur WhatsApp'), __('On vous répond vite')],
+            ] as [$icon, $strong, $rest])
+                <li class="flex items-center gap-3 rounded-xl bg-craie p-3 sm:p-4">
+                    <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white text-vert"><x-icon :name="$icon" class="size-5" /></span>
+                    <span class="min-w-0 text-xs sm:text-sm"><strong class="block leading-tight">{{ $strong }}</strong><span class="text-gris">{{ $rest }}</span></span>
                 </li>
             @endforeach
         </ul>
-    </section>
+
+        {{-- Catégories --}}
+        @if ($categories->isNotEmpty())
+            <section>
+                <h2 class="text-xl sm:text-2xl">{{ __('Catégories') }}</h2>
+                <div class="-mx-4 mt-3 flex gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-5 sm:px-0">
+                    @foreach ($categories as $cat)
+                        <a href="{{ route('shop.category', $cat) }}" class="group w-28 shrink-0 text-center sm:w-auto">
+                            <span class="flex aspect-square items-center justify-center rounded-2xl bg-craie p-3 transition group-hover:bg-vert-pale sm:aspect-[4/3] sm:px-8">
+                                <x-shoe :silhouette="$cat->silhouette" hex="#151816" class="w-full" />
+                            </span>
+                            <span class="mt-2 block text-sm font-semibold leading-tight">{{ $cat->name }}</span>
+                            <span class="text-xs text-gris">{{ trans_choice(':count modèle|:count modèles', $cat->products_count) }}</span>
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        {{-- Promos --}}
+        @if ($deals->isNotEmpty())
+            <section class="rounded-2xl bg-rouge-pale p-4 sm:p-6">
+                <div class="flex items-center justify-between gap-4">
+                    <h2 class="flex items-center gap-2 text-xl text-rouge sm:text-2xl"><span class="rounded-md bg-rouge px-2 py-0.5 text-base text-white">%</span>{{ __('Promos du moment') }}</h2>
+                    <a href="{{ route('shop', ['promo' => 1]) }}" class="text-sm font-bold text-rouge hover:underline">{{ __('Tout voir') }} →</a>
+                </div>
+                <div class="-mx-4 mt-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:px-0 lg:grid-cols-4">
+                    @foreach ($deals as $product)
+                        <div class="w-[44%] shrink-0 sm:w-auto"><x-product-card :product="$product" /></div>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        {{-- Les plus demandés --}}
+        @if ($featured->isNotEmpty())
+            <section>
+                <div class="flex items-center justify-between gap-4">
+                    <h2 class="text-xl sm:text-2xl">{{ __('Les plus demandés') }}</h2>
+                    <a href="{{ route('shop') }}" class="link-arrow">{{ __('Tout voir') }} →</a>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+                    @foreach ($featured as $product)
+                        <x-product-card :product="$product" :loading="$loop->index < 4 ? 'eager' : 'lazy'" />
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        {{-- Achat par pointure --}}
+        <section class="rounded-2xl border border-ligne p-4 sm:p-6">
+            <h2 class="text-xl sm:text-2xl">{{ __('Achetez par pointure') }}</h2>
+            <p class="mt-1 text-sm text-gris">{{ __('Touchez votre pointure : on vous montre seulement les modèles disponibles.') }}</p>
+            <div class="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-8">
+                @foreach (range(39, 46) as $size)
+                    <a href="{{ route('shop', ['pointure' => [$size]]) }}" class="flex h-12 items-center justify-center rounded-lg border-2 border-ligne text-lg font-bold transition hover:border-vert hover:bg-vert hover:text-white">{{ $size }}</a>
+                @endforeach
+            </div>
+        </section>
+
+        {{-- Nouveautés --}}
+        @if ($latest->isNotEmpty())
+            <section>
+                <div class="flex items-center justify-between gap-4">
+                    <h2 class="text-xl sm:text-2xl">{{ __('Nouveautés') }}</h2>
+                    <a href="{{ route('shop', ['tri' => 'nouveautes']) }}" class="link-arrow">{{ __('Tout voir') }} →</a>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+                    @foreach ($latest as $product)
+                        <x-product-card :product="$product" />
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        {{-- Comment commander + WhatsApp --}}
+        <section class="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+            <div class="rounded-2xl bg-craie p-5 sm:p-8">
+                <h2 class="text-xl sm:text-2xl">{{ __('Comment commander ?') }}</h2>
+                <ol class="mt-5 grid gap-5 sm:grid-cols-3">
+                    @foreach ([
+                        ['Choisissez', 'Votre modèle et votre pointure.'],
+                        ['Validez', 'Nom, téléphone, commune. Pas de compte à créer.'],
+                        ['Recevez', 'Le livreur vous appelle. Vous payez à la réception.'],
+                    ] as $i => [$step, $text])
+                        <li class="flex gap-3 sm:block">
+                            <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-vert text-sm font-bold text-white">{{ $i + 1 }}</span>
+                            <div class="sm:mt-3">
+                                <h3 class="text-base">{{ __($step) }}</h3>
+                                <p class="text-sm text-gris">{{ __($text) }}</p>
+                            </div>
+                        </li>
+                    @endforeach
+                </ol>
+            </div>
+            <div class="flex flex-col justify-center rounded-2xl bg-vert-pale p-5 sm:p-8">
+                <h2 class="text-xl sm:text-2xl">{{ __('Vous ne trouvez pas votre modèle ?') }}</h2>
+                <p class="mt-2 text-sm text-gris">{{ __('Envoyez-nous une photo sur WhatsApp : on le cherche pour vous.') }}</p>
+                <a href="{{ route('wa.contact') }}" rel="nofollow" class="btn-wa mt-5 self-start"><x-icon name="whatsapp" class="size-5" />{{ __('Écrire sur WhatsApp') }}</a>
+            </div>
+        </section>
+    </div>
 </x-layouts.public>

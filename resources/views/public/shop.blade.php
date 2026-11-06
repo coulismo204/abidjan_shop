@@ -30,7 +30,7 @@
     :title="$category ? $category->name.' homme à Abidjan' : __('Chaussures homme')"
     :description="$category?->description ? $category->description.' '.__('Livraison à Abidjan, paiement à la livraison.') : null"
 >
-    <div class="container-page pt-8 sm:pt-12">
+    <div class="container-page pt-5 sm:pt-8">
         <nav class="text-sm text-gris" aria-label="{{ __('Fil d\'Ariane') }}">
             <a href="{{ route('home') }}" class="hover:text-encre">{{ __('Accueil') }}</a>
             <span aria-hidden="true" class="mx-1">/</span>
@@ -43,20 +43,13 @@
             @endif
         </nav>
         <div class="mt-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
-            <h1 class="text-5xl sm:text-7xl">{{ $heading }}</h1>
+            <h1 class="text-2xl sm:text-4xl">{{ $heading }}</h1>
             <p class="pb-1 text-sm font-semibold text-gris" aria-live="polite">{{ trans_choice(':count modèle|:count modèles', $products->total()) }}</p>
         </div>
         @if ($category?->description)
             <p class="mt-3 max-w-2xl text-gris">{{ $category->description }}</p>
         @endif
 
-        {{-- Catégories : on garde les autres filtres en changeant de catégorie --}}
-        <div class="-mx-4 mt-6 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0">
-            <a href="{{ route('shop', $query) }}" @class(['shrink-0 rounded-full border px-4 py-2.5 text-sm font-semibold transition', 'border-encre bg-encre text-white' => ! $category, 'border-ligne bg-white hover:border-encre' => $category])>{{ __('Tout') }}</a>
-            @foreach ($categories as $cat)
-                <a href="{{ route('shop.category', [$cat, ...$query]) }}" @class(['shrink-0 rounded-full border px-4 py-2.5 text-sm font-semibold transition', 'border-encre bg-encre text-white' => $category?->is($cat), 'border-ligne bg-white hover:border-encre' => ! $category?->is($cat)])>{{ $cat->name }}</a>
-            @endforeach
-        </div>
     </div>
 
     <div class="container-page mt-6 grid gap-8 lg:grid-cols-[17rem_1fr] lg:gap-10">
@@ -65,7 +58,7 @@
         <form id="filters" data-filters method="get" action="{{ $category ? route('shop.category', $category) : route('shop') }}"
               class="fixed inset-0 z-50 hidden flex-col bg-white peer-checked:flex lg:static lg:z-auto lg:flex lg:bg-transparent">
             <div class="flex items-center justify-between border-b border-ligne px-4 py-3 lg:hidden">
-                <p class="font-display text-2xl uppercase">{{ __('Filtres') }}</p>
+                <p class="font-display text-2xl">{{ __('Filtres') }}</p>
                 <label for="filters-toggle" class="flex size-11 cursor-pointer items-center justify-center rounded-full hover:bg-sable" aria-label="{{ __('Fermer les filtres') }}"><x-icon name="close" class="size-6" /></label>
             </div>
 
@@ -81,7 +74,7 @@
 
                 @if ($facets['sizes']->isNotEmpty())
                     <fieldset>
-                        <legend class="field-label flex w-full items-center justify-between">{{ __('Pointure') }} <a href="{{ route('how') }}#pointures" class="text-xs font-semibold text-orange-fonce underline underline-offset-2">{{ __('Guide') }}</a></legend>
+                        <legend class="field-label flex w-full items-center justify-between">{{ __('Pointure') }} <a href="{{ route('how') }}#pointures" class="text-xs font-semibold text-vert-fonce underline underline-offset-2">{{ __('Guide') }}</a></legend>
                         <div class="grid grid-cols-4 gap-2">
                             @foreach ($facets['sizes'] as $size)
                                 <label class="chip rounded-xl px-0">
@@ -148,9 +141,9 @@
 
         <div class="min-w-0">
             <div class="flex items-center justify-between gap-3">
-                <label for="filters-toggle" class="btn-outline cursor-pointer px-5 py-2.5 text-sm lg:hidden">
+                <label for="filters-toggle" class="btn-outline cursor-pointer px-5 py-2.5 lg:hidden">
                     <x-icon name="filter" class="size-5" />{{ __('Filtrer') }}
-                    @if ($activeCount)<span class="flex size-5 items-center justify-center rounded-full bg-orange text-[11px] font-extrabold text-encre">{{ $activeCount }}</span>@endif
+                    @if ($activeCount)<span class="flex size-5 items-center justify-center rounded-full bg-vert text-[11px] font-semibold text-encre">{{ $activeCount }}</span>@endif
                 </label>
                 <div class="ml-auto flex items-center gap-2">
                     <label for="tri" class="hidden text-sm text-gris sm:block">{{ __('Trier par') }}</label>
@@ -181,7 +174,7 @@
             @endif
 
             @if ($products->isEmpty())
-                <div class="mt-8 rounded-3xl border border-dashed border-ligne bg-white px-6 py-14 text-center">
+                <div class="mt-8 rounded-xl border border-dashed border-ligne bg-white px-6 py-14 text-center">
                     <x-shoe silhouette="basket" hex="#ebe5da" class="mx-auto w-40" />
                     <h2 class="mt-4 text-3xl">{{ __('Aucune paire ne correspond') }}</h2>
                     <p class="mx-auto mt-2 max-w-md text-gris">{{ __('Retirez un filtre, ou dites-nous ce que vous cherchez : on peut souvent le trouver pour vous.') }}</p>
@@ -191,7 +184,7 @@
                     </div>
                 </div>
             @else
-                <div class="mt-6 grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 md:grid-cols-3">
+                <div class="mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
                     @foreach ($products as $product)
                         <x-product-card :product="$product" :loading="$loop->index < 6 ? 'eager' : 'lazy'" />
                     @endforeach

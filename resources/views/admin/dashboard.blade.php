@@ -9,9 +9,9 @@
             [__('Ventes'), Money::fcfa($revenue), __('commandées sur 30 jours'), false],
             [__('Encaissé'), Money::fcfa($delivered), __('commandes livrées, 30 jours'), false],
         ] as [$label, $value, $help, $highlight])
-            <div @class(['rounded-2xl p-4', 'bg-orange' => $highlight, 'card' => ! $highlight])>
+            <div @class(['rounded-xl p-4', 'bg-vert' => $highlight, 'card' => ! $highlight])>
                 <p class="text-xs font-bold tracking-wider uppercase">{{ $label }}</p>
-                <p class="mt-1 font-display text-3xl font-extrabold [font-stretch:85%]">{{ $value }}</p>
+                <p class="mt-1 font-display text-3xl font-semibold">{{ $value }}</p>
                 <p @class(['text-xs', 'text-encre/75' => $highlight, 'text-gris' => ! $highlight])>{{ $help }}</p>
             </div>
         @endforeach
@@ -43,7 +43,7 @@
                 @forelse ($lowStock as $size)
                     <li class="flex items-center justify-between gap-3 py-2">
                         <a href="{{ route('admin.products.edit', $size->product) }}" class="min-w-0 truncate hover:underline">{{ $size->product->fullName() }}</a>
-                        <span class="shrink-0">{{ __('P. :s', ['s' => $size->size]) }} · <span @class(['badge', 'bg-rouge text-white' => $size->stock === 0, 'bg-orange-pale text-orange-fonce' => $size->stock === 1])>{{ $size->stock === 0 ? __('épuisée') : __('1 paire') }}</span></span>
+                        <span class="shrink-0">{{ __('P. :s', ['s' => $size->size]) }} · <span @class(['badge', 'bg-rouge text-white' => $size->stock === 0, 'bg-vert-pale text-vert-fonce' => $size->stock === 1])>{{ $size->stock === 0 ? __('épuisée') : __('1 paire') }}</span></span>
                     </li>
                 @empty
                     <li class="py-2 text-gris">{{ __('Rien à signaler.') }}</li>

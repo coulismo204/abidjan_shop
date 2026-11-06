@@ -18,8 +18,8 @@ class Setting extends Model
     /** Valeurs par défaut, modifiables depuis l'administration (Réglages). */
     public const DEFAULTS = [
         'whatsapp_number' => '2250700000000',
-        'hero_title' => 'Le style au pied, livré chez vous',
-        'hero_subtitle' => 'Baskets, mocassins, chaussures de ville : les modèles qui comptent, en vraies pointures, livrés partout à Abidjan.',
+        'hero_title' => 'Vos chaussures livrées en 24 h',
+        'hero_subtitle' => 'Baskets, mocassins, chaussures de ville : commandez en 1 minute et payez à la livraison, partout à Abidjan.',
         'delivery_fee' => '1500',
         'delivery_delay' => 'Livraison en 24 h à Abidjan',
         'delivery_outside' => 'Intérieur du pays : expédition par car, frais confirmés sur WhatsApp.',

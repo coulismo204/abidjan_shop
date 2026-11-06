@@ -23,7 +23,7 @@ enum OrderStatus: string
     public function badge(): string
     {
         return match ($this) {
-            self::New => 'bg-orange text-encre',
+            self::New => 'bg-jaune text-encre',
             self::Confirmed => 'bg-encre text-white',
             self::Delivered => 'bg-vert text-white',
             self::Cancelled => 'bg-sable text-gris line-through',

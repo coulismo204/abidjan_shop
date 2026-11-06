@@ -11,11 +11,11 @@
     ];
 @endphp
 <x-layouts.public :title="__('Livraison, paiement et pointures')" :description="__('Comment commander chez Abidjan Shop : livraison partout à Abidjan, paiement à la livraison ou Mobile Money, guide des pointures et échanges.')">
-    <section class="bg-jaune text-encre">
+    <section class="border-b border-ligne">
         <div class="container-page py-12 sm:py-16">
-            <p class="eyebrow before:bg-encre">{{ __('Aide') }}</p>
-            <h1 class="mt-4 max-w-3xl text-5xl sm:text-7xl">{{ __('Commander, recevoir, payer') }}</h1>
-            <p class="mt-5 max-w-xl text-lg font-medium">{{ __('Tout ce qu\'il faut savoir avant d\'acheter, en deux minutes de lecture.') }}</p>
+            <p class="eyebrow text-gris">{{ __('Aide') }}</p>
+            <h1 class="mt-4 max-w-3xl text-3xl sm:text-4xl">{{ __('Commander, recevoir, payer') }}</h1>
+            <p class="mt-5 max-w-xl text-lg text-gris">{{ __('Tout ce qu\'il faut savoir avant d\'acheter, en deux minutes de lecture.') }}</p>
         </div>
     </section>
 
@@ -25,10 +25,10 @@
             ['truck', 'Recevez', Setting::get('delivery_delay').' · '.__('frais : :f.', ['f' => WhatsApp::deliveryLabel(Setting::deliveryFee())])],
             ['wallet', 'Payez', 'Espèces au livreur, ou Orange Money, MTN MoMo, Moov Money, Wave. Rien à payer en ligne.'],
         ] as $i => [$icon, $t, $d])
-            <div class="rounded-3xl {{ ['bg-peche', 'bg-menthe', 'bg-azur'][$i] }} p-6">
-                <span class="flex size-12 items-center justify-center rounded-2xl {{ ['bg-orange', 'bg-vert-vif', 'bg-ciel'][$i] }}"><x-icon :name="$icon" class="size-6" /></span>
+            <div class="border border-ligne bg-white p-8">
+                <x-icon :name="$icon" class="size-7 text-vert-fonce" />
                 <h2 class="mt-4 text-3xl">{{ __($t) }}</h2>
-                <p class="mt-2 leading-relaxed">{{ __($d) }}</p>
+                <p class="mt-2 leading-relaxed text-gris">{{ __($d) }}</p>
             </div>
         @endforeach
     </div>
@@ -36,19 +36,19 @@
     <div class="container-page mt-16 grid gap-12 lg:grid-cols-2">
         <section id="pointures">
             <p class="eyebrow text-gris">{{ __('Guide') }}</p>
-            <h2 class="mt-2 text-4xl sm:text-5xl">{{ __('Trouver sa pointure') }}</h2>
+            <h2 class="mt-2 text-2xl sm:text-3xl">{{ __('Trouver sa pointure') }}</h2>
             <ol class="mt-5 list-decimal space-y-2 pl-5 leading-relaxed text-encre/85">
                 <li>{{ __('Posez le pied à plat sur une feuille, talon contre un mur.') }}</li>
                 <li>{{ __('Marquez le bout du plus long orteil et mesurez en centimètres.') }}</li>
                 <li>{{ __('Lisez votre pointure dans le tableau. Entre deux tailles ? Prenez la plus grande.') }}</li>
             </ol>
-            <div class="mt-6 overflow-hidden rounded-2xl border border-ligne bg-white">
+            <div class="mt-6 overflow-hidden rounded-xl border border-ligne bg-white">
                 <table class="w-full text-left text-sm">
                     <caption class="sr-only">{{ __('Correspondance longueur du pied et pointure européenne') }}</caption>
-                    <thead class="bg-orange text-encre"><tr><th scope="col" class="px-4 py-3">{{ __('Pointure EU') }}</th><th scope="col" class="px-4 py-3">{{ __('Longueur du pied') }}</th></tr></thead>
+                    <thead class="bg-encre text-white"><tr><th scope="col" class="px-4 py-3">{{ __('Pointure EU') }}</th><th scope="col" class="px-4 py-3">{{ __('Longueur du pied') }}</th></tr></thead>
                     <tbody class="divide-y divide-ligne">
                         @foreach ($sizes as $eu => $cm)
-                            <tr><th scope="row" class="px-4 py-2.5 font-display text-lg [font-stretch:85%]">{{ $eu }}</th><td class="px-4 py-2.5">{{ $cm }} cm</td></tr>
+                            <tr><th scope="row" class="px-4 py-2.5 font-display text-lg">{{ $eu }}</th><td class="px-4 py-2.5">{{ $cm }} cm</td></tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -59,13 +59,13 @@
         <div class="space-y-12">
             <section id="echanges">
                 <p class="eyebrow text-gris">{{ __('Sans stress') }}</p>
-                <h2 class="mt-2 text-4xl sm:text-5xl">{{ __('Échanges') }}</h2>
+                <h2 class="mt-2 text-2xl sm:text-3xl">{{ __('Échanges') }}</h2>
                 <p class="mt-4 leading-relaxed text-encre/85">{{ Setting::get('exchange_policy') }}</p>
                 <a href="{{ route('wa.contact') }}" rel="nofollow" class="btn-wa mt-5"><x-icon name="whatsapp" />{{ __('Demander un échange') }}</a>
             </section>
             <section>
-                <h2 class="text-4xl sm:text-5xl">{{ __('Questions fréquentes') }}</h2>
-                <div class="mt-5 divide-y divide-ligne rounded-2xl border border-ligne bg-white">
+                <h2 class="text-2xl sm:text-3xl">{{ __('Questions fréquentes') }}</h2>
+                <div class="mt-5 divide-y divide-ligne rounded-xl border border-ligne bg-white">
                     @foreach ($faq as [$q, $a])
                         <details class="group p-5">
                             <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">{{ __($q) }}<x-icon name="chevron" class="size-5 shrink-0 transition group-open:rotate-180" /></summary>

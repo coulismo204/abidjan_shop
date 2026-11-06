@@ -113,12 +113,6 @@ class Product extends Model
         return $this->sizes->every(fn (ProductSize $s) => $s->stock < 1);
     }
 
-    /** Fond coloré du visuel : alterne entre quatre teintes vives pour un catalogue joyeux. */
-    public function tintClass(): string
-    {
-        return ['bg-peche', 'bg-menthe', 'bg-citron', 'bg-azur'][$this->id % 4];
-    }
-
     /** Nom complet pour les messages et le SEO : « Nike Air Force 1 – Blanc ». */
     public function fullName(): string
     {

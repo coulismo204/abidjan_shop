@@ -11,7 +11,7 @@
 <body class="grid min-h-dvh bg-craie lg:grid-cols-2">
     <div class="relative isolate hidden flex-col justify-between overflow-hidden bg-encre p-12 text-white lg:flex">
         <a href="{{ route('home') }}" class="text-2xl"><x-logo tagline /></a>
-        <div aria-hidden="true" class="absolute -right-24 -bottom-24 -z-10 size-[30rem] rounded-full bg-orange"></div>
+        <div aria-hidden="true" class="absolute -right-24 -bottom-24 -z-10 size-[30rem] rounded-full bg-vert"></div>
         <x-shoe silhouette="basket" hex="#f6f3ee" class="absolute right-8 bottom-24 -z-10 w-[70%] -rotate-12" />
         <h2 class="max-w-sm text-5xl">{{ __('Votre boutique, ouverte 24 h/24') }}</h2>
     </div>

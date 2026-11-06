@@ -9,11 +9,11 @@
 <x-layouts.public :title="__('Livraison')" noindex :floating-wa="false">
     <div class="container-page pt-8 sm:pt-12">
         @include('public.partials.steps', ['current' => 2])
-        <h1 class="mt-6 text-5xl sm:text-6xl">{{ __('Où vous livrer ?') }}</h1>
+        <h1 class="mt-6 text-3xl sm:text-4xl">{{ __('Où vous livrer ?') }}</h1>
         <p class="mt-3 text-gris">{{ __('Quatre informations et c\'est fini. Pas de compte à créer, rien à payer maintenant.') }}</p>
 
         <div class="mt-8 grid gap-8 lg:grid-cols-[1fr_24rem]">
-            <form method="post" action="{{ route('checkout.store') }}" class="space-y-6 rounded-3xl border border-ligne bg-white p-5 sm:p-8" data-once novalidate>
+            <form method="post" action="{{ route('checkout.store') }}" class="space-y-6 rounded-xl border border-ligne bg-white p-5 sm:p-8" data-once novalidate>
                 @csrf
                 {{-- Piège à robots : invisible pour les humains --}}
                 <div class="hidden" aria-hidden="true"><label>Site web <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
@@ -57,7 +57,7 @@
                     <legend class="field-label">{{ __('Paiement') }}</legend>
                     <div class="grid gap-2 sm:grid-cols-2">
                         @foreach (PaymentMethod::cases() as $method)
-                            <label class="flex cursor-pointer items-start gap-3 rounded-2xl border border-ligne p-4 transition hover:border-encre has-checked:border-encre has-checked:ring-1 has-checked:ring-encre">
+                            <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-ligne p-4 transition hover:border-encre has-checked:border-encre has-checked:ring-1 has-checked:ring-encre">
                                 <input type="radio" name="payment_method" value="{{ $method->value }}" @checked(old('payment_method', PaymentMethod::Cash->value) === $method->value) class="mt-0.5 size-5 accent-encre">
                                 <span>
                                     <span class="block font-semibold">{{ $method->shortLabel() }}</span>
@@ -74,11 +74,11 @@
                     <textarea id="note" name="note" rows="2" maxlength="1000" placeholder="{{ __('Heure de livraison préférée, autre pointure à essayer…') }}" class="field">{{ old('note') }}</textarea>
                 </div>
 
-                <button type="submit" class="btn-primary w-full py-4 text-base">{{ __('Valider ma commande') }}<x-icon name="arrow" class="size-5" /></button>
+                <button type="submit" class="btn-primary w-full">{{ __('Valider ma commande') }}<x-icon name="arrow" class="size-4" /></button>
                 <p class="text-center text-xs text-gris">{{ __('Après validation, envoyez-nous le récapitulatif sur WhatsApp en un clic : on vous confirme la livraison.') }}</p>
             </form>
 
-            <aside class="h-fit rounded-3xl border border-ligne bg-white p-5 sm:p-6 lg:sticky lg:top-24">
+            <aside class="h-fit rounded-xl border border-ligne bg-white p-5 sm:p-6 lg:sticky lg:top-24">
                 <div class="flex items-center justify-between">
                     <h2 class="text-2xl">{{ __('Votre commande') }}</h2>
                     <a href="{{ route('cart') }}" class="text-sm font-semibold underline underline-offset-2">{{ __('Modifier') }}</a>
@@ -94,7 +94,7 @@
                 </dl>
                 <div class="mt-4 flex items-baseline justify-between border-t border-ligne pt-4">
                     <p class="font-semibold">{{ __('Total') }}</p>
-                    <p class="font-display text-3xl font-extrabold [font-stretch:85%]">{{ Money::fcfa($subtotal + ($deliveryFee ?? 0)) }}</p>
+                    <p class="font-display text-3xl font-semibold">{{ Money::fcfa($subtotal + ($deliveryFee ?? 0)) }}</p>
                 </div>
                 <p class="mt-3 text-xs text-gris">{{ Setting::get('delivery_outside') }}</p>
             </aside>

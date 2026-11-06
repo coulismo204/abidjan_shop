@@ -5,13 +5,13 @@
     $editable ??= false;
 @endphp
 <li class="flex gap-4 py-4">
-    <a href="{{ route('product', $product) }}" class="block size-20 shrink-0 overflow-hidden rounded-xl {{ $product->tintClass() }} sm:size-24">
+    <a href="{{ route('product', $product) }}" class="block size-20 shrink-0 overflow-hidden rounded-xl bg-sable sm:size-24">
         <x-product-visual :product="$product" />
     </a>
     <div class="flex min-w-0 flex-1 flex-col">
         <div class="flex justify-between gap-3">
             <div class="min-w-0">
-                @if ($product->brand)<p class="text-[11px] font-bold tracking-[.16em] text-gris uppercase">{{ $product->brand->name }}</p>@endif
+                @if ($product->brand)<p class="text-xs font-semibold text-gris">{{ $product->brand->name }}</p>@endif
                 <a href="{{ route('product', $product) }}" class="font-semibold hover:underline">{{ $product->name }}</a>
                 <p class="mt-0.5 text-sm text-gris">
                     @if ($product->color){{ $product->color->name }} · @endif{{ __('Pointure :s', ['s' => $size->size]) }}

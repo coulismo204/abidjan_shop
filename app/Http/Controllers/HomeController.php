@@ -23,11 +23,17 @@ class HomeController extends Controller
         $latest = Product::published()->inStock()->with($with)
             ->latest()->take(8)->get();
 
+        $deals = Product::published()->inStock()->whereColumn('compare_at_price', '>', 'price')
+            ->with($with)->orderByRaw('(compare_at_price - price) * 100 / compare_at_price desc')->take(8)->get();
+        if ($deals->count() > 4) {
+            $deals = $deals->take(intdiv($deals->count(), 4) * 4);
+        }
+
         $categories = Category::visible()->ordered()
             ->withCount(['products' => fn ($q) => $q->published()->inStock()])
             ->get()
             ->where('products_count', '>', 0);
 
-        return view('public.home', compact('featured', 'latest', 'categories'));
+        return view('public.home', compact('featured', 'latest', 'deals', 'categories'));
     }
 }

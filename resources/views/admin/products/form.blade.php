@@ -66,7 +66,7 @@
                 <div class="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-6">
                     @foreach (Product::SIZES as $size)
                         <div>
-                            <label for="stock-{{ $size }}" class="mb-1 block text-center font-display text-xl [font-stretch:85%]">{{ $size }}</label>
+                            <label for="stock-{{ $size }}" class="mb-1 block text-center font-display text-xl">{{ $size }}</label>
                             <input id="stock-{{ $size }}" data-stock-input type="number" name="stock[{{ $size }}]" min="0" max="9999" value="{{ old('stock.'.$size, $stock[$size] ?? '') }}" class="field px-2 py-2 text-center">
                         </div>
                     @endforeach
@@ -80,7 +80,7 @@
                     <div class="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4">
                         @foreach ($product->photos as $photo)
                             <div class="rounded-xl border border-ligne p-2">
-                                <img src="{{ $photo->url() }}" alt="" class="aspect-square w-full rounded-lg object-cover">
+                                <img src="{{ $photo->url() }}" alt="" class="aspect-square w-full rounded-xl object-cover">
                                 <label class="mt-2 flex items-center gap-1.5 text-xs"><input type="radio" name="cover_photo" value="{{ $photo->id }}" @checked($loop->first) class="accent-encre">{{ __('Principale') }}</label>
                                 <label class="mt-1 flex items-center gap-1.5 text-xs text-rouge"><input type="checkbox" name="delete_photos[]" value="{{ $photo->id }}" class="accent-rouge">{{ __('Supprimer') }}</label>
                             </div>
@@ -88,7 +88,7 @@
                     </div>
                 @endif
                 <label for="photos" class="field-label mt-4">{{ __('Ajouter des photos') }}</label>
-                <input id="photos" type="file" name="photos[]" accept="image/*" multiple class="block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-encre file:px-4 file:py-2 file:font-semibold file:text-white">
+                <input id="photos" type="file" name="photos[]" accept="image/*" multiple class="block w-full text-sm file:mr-3 file:rounded-xl file:border-0 file:bg-encre file:px-4 file:py-2 file:font-semibold file:text-white">
             </section>
         </div>
 

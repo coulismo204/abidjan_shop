@@ -24,18 +24,18 @@
     @endphp
     <header class="sticky top-0 z-30 bg-encre text-white">
         <div class="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4">
-            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 text-[15px]"><x-logo /><span class="badge bg-orange text-encre">admin</span></a>
+            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 text-[15px]"><x-logo /><span class="badge bg-vert text-encre">admin</span></a>
             <div class="flex items-center gap-1 text-sm">
-                <a href="{{ route('home') }}" target="_blank" class="hidden rounded-lg px-3 py-2 font-medium text-gris-clair hover:bg-white/10 hover:text-white sm:block">{{ __('Voir le site') }} ↗</a>
-                <a href="{{ route('admin.account') }}" class="rounded-lg px-3 py-2 font-medium text-gris-clair hover:bg-white/10 hover:text-white">{{ __('Mon compte') }}</a>
-                <form method="post" action="{{ route('admin.logout') }}">@csrf<button class="rounded-lg px-3 py-2 font-medium text-gris-clair hover:bg-white/10 hover:text-white">{{ __('Déconnexion') }}</button></form>
+                <a href="{{ route('home') }}" target="_blank" class="hidden rounded-xl px-3 py-2 font-medium text-gris-clair hover:bg-white/10 hover:text-white sm:block">{{ __('Voir le site') }} ↗</a>
+                <a href="{{ route('admin.account') }}" class="rounded-xl px-3 py-2 font-medium text-gris-clair hover:bg-white/10 hover:text-white">{{ __('Mon compte') }}</a>
+                <form method="post" action="{{ route('admin.logout') }}">@csrf<button class="rounded-xl px-3 py-2 font-medium text-gris-clair hover:bg-white/10 hover:text-white">{{ __('Déconnexion') }}</button></form>
             </div>
         </div>
         <nav class="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-3 pb-2.5 text-sm font-semibold [scrollbar-width:none]">
             @foreach ($nav as [$route, $pattern, $label, $count])
-                <a href="{{ route($route) }}" @class(['flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 transition', 'bg-orange text-encre' => request()->routeIs($pattern), 'text-gris-clair hover:bg-white/10 hover:text-white' => ! request()->routeIs($pattern)])>
+                <a href="{{ route($route) }}" @class(['flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 transition', 'bg-vert text-encre' => request()->routeIs($pattern), 'text-gris-clair hover:bg-white/10 hover:text-white' => ! request()->routeIs($pattern)])>
                     {{ $label }}
-                    @if ($count)<span @class(['rounded-full px-1.5 text-[11px] leading-5 font-extrabold', 'bg-encre text-orange' => request()->routeIs($pattern), 'bg-orange text-encre' => ! request()->routeIs($pattern)])>{{ $count }}</span>@endif
+                    @if ($count)<span @class(['rounded-full px-1.5 text-[11px] leading-5 font-semibold', 'bg-encre text-vert' => request()->routeIs($pattern), 'bg-vert text-encre' => ! request()->routeIs($pattern)])>{{ $count }}</span>@endif
                 </a>
             @endforeach
         </nav>

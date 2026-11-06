@@ -26,18 +26,18 @@
         @forelse ($products as $product)
             @php($stock = $product->sizes->sum('stock'))
             <div @class(['card flex items-center gap-4 p-3', 'opacity-60' => ! $product->is_visible])>
-                <div class="size-16 shrink-0 overflow-hidden rounded-xl {{ $product->tintClass() }}"><x-product-visual :product="$product" /></div>
+                <div class="size-16 shrink-0 overflow-hidden rounded-xl bg-sable"><x-product-visual :product="$product" /></div>
                 <div class="min-w-0 flex-1">
                     <a href="{{ route('admin.products.edit', $product) }}" class="font-semibold hover:underline">{{ $product->fullName() }}</a>
                     <p class="text-sm text-gris">
                         {{ $product->category->name }} · {{ Money::fcfa($product->price) }}
                         @if ($product->isOnSale())<span class="badge bg-rouge text-white">promo</span>@endif
-                        @if ($product->is_featured)<span class="badge bg-orange-pale text-orange-fonce">{{ __('à la une') }}</span>@endif
+                        @if ($product->is_featured)<span class="badge bg-vert-pale text-vert-fonce">{{ __('à la une') }}</span>@endif
                         @unless ($product->is_visible)<span class="badge bg-sable text-gris">{{ __('masqué') }}</span>@endunless
                     </p>
                     <p class="mt-1 flex flex-wrap gap-1 text-xs">
                         @foreach ($product->sizes as $size)
-                            <span @class(['rounded px-1.5 py-0.5', 'bg-sable' => $size->stock > 1, 'bg-orange-pale text-orange-fonce' => $size->stock === 1, 'bg-rouge-pale text-rouge line-through' => $size->stock === 0])>{{ $size->size }}:{{ $size->stock }}</span>
+                            <span @class(['rounded px-1.5 py-0.5', 'bg-sable' => $size->stock > 1, 'bg-vert-pale text-vert-fonce' => $size->stock === 1, 'bg-rouge-pale text-rouge line-through' => $size->stock === 0])>{{ $size->size }}:{{ $size->stock }}</span>
                         @endforeach
                         <span class="px-1 font-semibold">= {{ trans_choice(':count paire|:count paires', $stock) }}</span>
                     </p>

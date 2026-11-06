@@ -42,15 +42,15 @@
         <div class="mt-4 grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
             {{-- Visuels --}}
             <div data-gallery class="lg:sticky lg:top-24 lg:self-start">
-                <div class="relative aspect-square overflow-hidden rounded-3xl {{ $product->tintClass() }}">
+                <div class="relative aspect-square overflow-hidden rounded-xl bg-sable">
                     @if ($photos->isNotEmpty())
                         <img data-gallery-main src="{{ $photos->first()->url() }}" alt="{{ $product->fullName() }}" class="size-full object-cover" fetchpriority="high">
                     @else
                         <x-product-visual :product="$product" />
                     @endif
                     <div class="absolute top-4 left-4 flex flex-col items-start gap-1.5">
-                        @if ($product->isOnSale())<span class="badge bg-rouge px-3 py-1 text-sm text-white">−{{ $product->discountPercent() }} %</span>@endif
-                        @if ($product->isNew())<span class="badge bg-encre px-3 py-1 text-sm text-white">{{ __('Nouveau') }}</span>@endif
+                        @if ($product->isOnSale())<span class="badge bg-rouge px-3 py-1 text-white">−{{ $product->discountPercent() }} %</span>@endif
+                        @if ($product->isNew())<span class="badge bg-jaune px-3 py-1 text-encre">{{ __('Nouveau') }}</span>@endif
                     </div>
                 </div>
                 @if ($photos->count() > 1)
@@ -67,9 +67,9 @@
             {{-- Informations et commande --}}
             <div>
                 @if ($product->brand)
-                    <a href="{{ route('shop', ['marque' => [$product->brand->slug]]) }}" class="text-sm font-bold tracking-[.16em] text-gris uppercase hover:text-encre">{{ $product->brand->name }}</a>
+                    <a href="{{ route('shop', ['marque' => [$product->brand->slug]]) }}" class="text-sm font-semibold text-vert-fonce hover:underline">{{ $product->brand->name }}</a>
                 @endif
-                <h1 class="mt-1 text-5xl sm:text-6xl">{{ $product->name }}</h1>
+                <h1 class="mt-1 text-2xl sm:text-4xl">{{ $product->name }}</h1>
                 <x-price :product="$product" size="lg" class="mt-4" />
 
                 @if ($product->color)
@@ -93,20 +93,20 @@
                     <fieldset data-size-picker>
                         <legend class="flex w-full items-center justify-between text-sm">
                             <span class="font-semibold">{{ __('Pointure (EU)') }}</span>
-                            <a href="{{ route('how') }}#pointures" class="inline-flex items-center gap-1 font-semibold text-orange-fonce underline underline-offset-2"><x-icon name="ruler" class="size-4" />{{ __('Guide des pointures') }}</a>
+                            <a href="{{ route('how') }}#pointures" class="inline-flex items-center gap-1 font-semibold text-vert-fonce underline underline-offset-2"><x-icon name="ruler" class="size-4" />{{ __('Guide des pointures') }}</a>
                         </legend>
                         <div class="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-6">
                             @foreach ($product->sizes as $size)
                                 @php($out = $size->stock < 1)
                                 <label @class([
-                                    'relative flex h-14 flex-col items-center justify-center rounded-xl border text-lg font-bold transition select-none',
-                                    'cursor-pointer border-ligne bg-white hover:border-encre has-checked:border-encre has-checked:bg-encre has-checked:text-white has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-encre' => ! $out,
+                                    'relative flex h-12 flex-col items-center justify-center rounded-lg border-2 text-base font-bold transition select-none',
+                                    'cursor-pointer border-ligne bg-white hover:border-encre has-checked:border-vert has-checked:bg-vert has-checked:text-white has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-encre' => ! $out,
                                     'cursor-not-allowed border-dashed border-ligne bg-transparent text-gris/60 line-through' => $out,
                                 ])>
                                     <input type="radio" name="size_id" value="{{ $size->id }}" data-size="{{ $size->size }}" class="sr-only" @disabled($out) @checked((string) $preselected === (string) $size->id) required>
                                     {{ $size->size }}
                                     @if (! $out && $size->stock === 1)
-                                        <span class="absolute -top-2 rounded-full bg-orange px-1.5 text-[10px] leading-4 font-extrabold text-encre no-underline">{{ __('Dernière') }}</span>
+                                        <span class="absolute -top-2 rounded-full bg-vert px-1.5 text-[10px] leading-4 font-semibold text-encre no-underline">{{ __('Dernière') }}</span>
                                     @endif
                                     @if ($out)<span class="sr-only">{{ __('épuisée') }}</span>@endif
                                 </label>
@@ -116,12 +116,12 @@
                     </fieldset>
 
                     @if ($soldOut)
-                        <p class="mt-6 rounded-2xl bg-sable px-4 py-3 text-sm font-semibold">{{ __('Ce modèle est épuisé pour le moment. Écrivez-nous : on vous prévient dès son retour.') }}</p>
-                        <a href="{{ route('wa.product', $product) }}" rel="nofollow" class="btn-wa mt-4 w-full py-4"><x-icon name="whatsapp" />{{ __('Me prévenir sur WhatsApp') }}</a>
+                        <p class="mt-6 rounded-xl bg-sable px-4 py-3 text-sm font-semibold">{{ __('Ce modèle est épuisé pour le moment. Écrivez-nous : on vous prévient dès son retour.') }}</p>
+                        <a href="{{ route('wa.product', $product) }}" rel="nofollow" class="btn-wa mt-4 w-full"><x-icon name="whatsapp" />{{ __('Me prévenir sur WhatsApp') }}</a>
                     @else
-                        <div class="mt-6 hidden gap-3 sm:flex">
-                            <button type="submit" name="action" value="buy" class="btn-primary flex-1 py-4 text-base">{{ __('Commander maintenant') }}<x-icon name="arrow" class="size-5" /></button>
-                            <button type="submit" name="action" value="cart" class="btn-outline flex-1 py-4 text-base"><x-icon name="bag" />{{ __('Ajouter au panier') }}</button>
+                        <div class="mt-6 hidden flex-col gap-3 sm:flex xl:flex-row">
+                            <button type="submit" name="action" value="buy" class="btn-primary flex-1 whitespace-nowrap">{{ __('Commander maintenant') }}</button>
+                            <button type="submit" name="action" value="cart" class="btn-outline flex-1 whitespace-nowrap"><x-icon name="bag" class="size-4" />{{ __('Ajouter au panier') }}</button>
                         </div>
                     @endif
                 </form>
@@ -130,7 +130,7 @@
                     <x-icon name="whatsapp" class="size-5" />{{ __('Une question sur ce modèle ? Écrivez-nous') }}
                 </a>
 
-                <ul class="mt-8 divide-y divide-ligne rounded-2xl border border-ligne bg-white text-sm">
+                <ul class="mt-8 divide-y divide-ligne rounded-xl border border-ligne bg-white text-sm">
                     <li class="flex gap-3 p-4"><x-icon name="truck" class="size-5 shrink-0" /><span><strong>{{ Setting::get('delivery_delay') }}</strong> · {{ __('Livraison : :f', ['f' => \App\Support\WhatsApp::deliveryLabel(Setting::deliveryFee())]) }}</span></li>
                     <li class="flex gap-3 p-4"><x-icon name="wallet" class="size-5 shrink-0" /><span>{{ __('Paiement à la livraison en espèces, ou par Mobile Money (Orange, MTN, Moov, Wave).') }}</span></li>
                     <li class="flex gap-3 p-4"><x-icon name="swap" class="size-5 shrink-0" /><span>{{ Setting::get('exchange_policy') }}</span></li>
@@ -158,7 +158,7 @@
 
     @if ($related->isNotEmpty())
         <section class="container-page pt-16 sm:pt-24">
-            <h2 class="text-4xl sm:text-5xl">{{ __('Vous aimerez aussi') }}</h2>
+            <h2 class="text-xl sm:text-2xl">{{ __('Vous aimerez aussi') }}</h2>
             <div class="mt-6 grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 lg:grid-cols-4">
                 @foreach ($related as $item)
                     <x-product-card :product="$item" />
@@ -173,10 +173,10 @@
             <div class="flex items-center gap-3">
                 <div class="min-w-0 flex-1">
                     <p class="truncate text-xs text-gris">{{ __('Pointure') }} <strong data-size-label class="text-encre">{{ $preselected ? $product->sizes->firstWhere('id', $preselected)?->size : '—' }}</strong></p>
-                    <p class="font-display text-xl font-extrabold [font-stretch:85%]">{{ Money::fcfa($product->price) }}</p>
+                    <p class="text-lg font-medium tabular-nums">{{ Money::fcfa($product->price) }}</p>
                 </div>
-                <button type="submit" form="add-form" name="action" value="cart" class="btn-outline size-13 shrink-0 p-0" aria-label="{{ __('Ajouter au panier') }}"><x-icon name="bag" class="size-6" /></button>
-                <button type="submit" form="add-form" name="action" value="buy" class="btn-primary shrink-0 px-5 py-3.5">{{ __('Commander') }}<x-icon name="arrow" class="size-5" /></button>
+                <button type="submit" form="add-form" name="action" value="cart" class="btn-outline size-12 shrink-0 p-0" aria-label="{{ __('Ajouter au panier') }}"><x-icon name="bag" class="size-4" /></button>
+                <button type="submit" form="add-form" name="action" value="buy" class="btn-primary shrink-0 px-5">{{ __('Commander') }}<x-icon name="arrow" class="size-4" /></button>
             </div>
         </div>
     @endunless

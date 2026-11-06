@@ -48,7 +48,7 @@
                     <div><dt class="text-gris">{{ __('Téléphone') }}</dt><dd><a href="tel:+{{ $order->whatsappNumber() }}" class="font-semibold underline">{{ $order->formattedPhone() }}</a></dd></div>
                     <div><dt class="text-gris">{{ __('Adresse') }}</dt><dd class="font-semibold">{{ $order->commune }} · {{ $order->address }}</dd></div>
                     <div><dt class="text-gris">{{ __('Paiement') }}</dt><dd class="font-semibold">{{ $order->payment_method->label() }}</dd></div>
-                    @if ($order->note)<div><dt class="text-gris">{{ __('Remarque') }}</dt><dd class="rounded-lg bg-orange-pale p-2">{{ $order->note }}</dd></div>@endif
+                    @if ($order->note)<div><dt class="text-gris">{{ __('Remarque') }}</dt><dd class="rounded-xl bg-vert-pale p-2">{{ $order->note }}</dd></div>@endif
                 </dl>
                 <a href="{{ WhatsApp::url($replyMessage, $order->whatsappNumber()) }}" target="_blank" rel="noopener" class="btn-wa mt-4 w-full py-2.5 text-sm"><x-icon name="whatsapp" class="size-4" />{{ __('Écrire au client') }}</a>
             </section>
